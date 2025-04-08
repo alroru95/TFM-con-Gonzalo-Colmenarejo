@@ -1,0 +1,24 @@
+source leaprc.protein.ff19SB
+source leaprc.gaff2
+source leaprc.water.tip3p
+
+MOL = loadmol2 mol2/Mol14/Mol14.mol2 
+loadamberparams mol2/Mol14/Mol14.frcmod
+saveamberparm MOL mol2/Mol14/Mol14.prmtop mol2/Mol14/Mol14.inpcrd
+saveoff MOL mol2/Mol14/Mol14.lib
+loadoff mol2/Mol14/Mol14.lib
+
+
+protein = loadpdb 5m96.amber.pdb
+
+complex = combine {protein MOL}
+savepdb complex mol2/Mol14/5m96_Mol14.pdb
+saveamberparm complex mol2/Mol14/5m96_Mol14.prmtop mol2/Mol14/5m96_Mol14.inpcrd
+
+solv_complex = combine {protein MOL}
+solvateBox solv_complex TIP3PBOX 8.0
+addIons solv_complex Na+ 0
+addIons solv_complex Cl- 0
+savepdb solv_complex mol2/Mol14/5m96_Mol14_solv.pdb
+saveamberparm solv_complex mol2/Mol14/5m96_Mol14_solv.prmtop mol2/Mol14/5m96_Mol14_solv.inpcrd
+quit 
