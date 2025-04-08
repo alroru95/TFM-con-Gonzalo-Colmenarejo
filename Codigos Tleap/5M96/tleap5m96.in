@@ -1,0 +1,8 @@
+source leaprc.protein.ff14SB
+
+receptor = loadpdb 5m96.amber.pdb  
+
+saveamberparm receptor 5m96.prmtop 5m96.inpcrd
+
+quit
+
