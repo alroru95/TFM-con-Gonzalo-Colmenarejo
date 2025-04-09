@@ -3,3 +3,5 @@ Biología Computacional de la Universidad Autónoma de Madrid.
 
 
 También se incluye algunos archivos obtenidos.
+
+MUY IMPORTANTE: LAS RUTAS DE LOS ARCHIVOS SON EXCLUSIVAS DE MI CASO. 
