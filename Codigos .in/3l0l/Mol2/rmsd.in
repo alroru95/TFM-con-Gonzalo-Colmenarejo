@@ -1,0 +1,13 @@
+parm 3l0l_Mol2_solv.prmtop
+trajin 10.prod_4.traj
+
+autoimage
+
+reference 3l0l_Mol2_solv.pdb
+reference 10.prod_4.traj lastframe
+
+rms First :1-519&!@H= first out rmsd.agr
+rms Last :1-519&!@H= refindex 1 out rmsd.agr
+rms AutoDock :1-519&!@H= refindex 0 out rmsd.agr
+
+run
