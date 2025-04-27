@@ -95,6 +95,7 @@ cpptraj -i all_analysis.in
 ambpdb -p 5m96_Mol1_solv.prmtop -c 10.prod_4.rst7 > 5m96_Mol1_final.pdb
 plip -f 5m96_Mol1_final.pdb
 cpptraj -i rmsd.in 
+cpptraj -i all_analysis.in
 
 cd ..
 
@@ -103,6 +104,7 @@ cpptraj -i all_analysis.in
 ambpdb -p 5m96_Mol2_solv.prmtop -c 10.prod_4.rst7 > 5m96_Mol2_final.pdb
 plip -f 5m96_Mol2_final.pdb
 cpptraj -i rmsd.in  
+cpptraj -i all_analysis.in
 
 cd ..
 
@@ -111,6 +113,7 @@ cpptraj -i all_analysis.in
 ambpdb -p 5m96_Mol3_solv.prmtop -c 10.prod_4.rst7 > 5m96_Mol3_final.pdb
 plip -f 5m96_Mol3_final.pdb
 cpptraj -i rmsd.in 
+cpptraj -i all_analysis.in
 
 cd ..
 
@@ -119,6 +122,7 @@ cpptraj -i all_analysis.in
 ambpdb -p 5m96_Mol4_solv.prmtop -c 10.prod_4.rst7 > 5m96_Mol4_final.pdb
 plip -f 5m96_Mol4_final.pdb
 cpptraj -i rmsd.in 
+cpptraj -i all_analysis.in
 
 cd ..
 
@@ -127,6 +131,7 @@ cpptraj -i all_analysis.in
 ambpdb -p 5m96_Mol5_solv.prmtop -c 10.prod_4.rst7 > 5m96_Mol5_final.pdb
 plip -f 5m96_Mol5_final.pdb
 cpptraj -i rmsd.in 
+cpptraj -i all_analysis.in
 
 cd ..
 
@@ -135,6 +140,7 @@ cpptraj -i all_analysis.in
 ambpdb -p 5m96_Mol6_solv.prmtop -c 10.prod_4.rst7 > 5m96_Mol6_final.pdb
 plip -f 5m96_Mol6_final.pdb
 cpptraj -i rmsd.in 
+cpptraj -i all_analysis.in
 
 cd ..
 
@@ -143,6 +149,7 @@ cpptraj -i all_analysis.in
 ambpdb -p 5m96_Mol7_solv.prmtop -c 10.prod_4.rst7 > 5m96_Mol7_final.pdb
 plip -f 5m96_Mol7_final.pdb
 cpptraj -i rmsd.in 
+cpptraj -i all_analysis.in
 
 cd ..
 
@@ -151,6 +158,7 @@ cpptraj -i all_analysis.in
 ambpdb -p 5m96_Mol8_solv.prmtop -c 10.prod_4.rst7 > 5m96_Mol8_final.pdb
 plip -f 5m96_Mol8_final.pdb
 cpptraj -i rmsd.in 
+cpptraj -i all_analysis.in
 
 cd ..
 
@@ -159,6 +167,7 @@ cpptraj -i all_analysis.in
 ambpdb -p 5m96_Mol9_solv.prmtop -c 10.prod_4.rst7 > 5m96_Mol9_final.pdb
 plip -f 5m96_Mol9_final.pdb
 cpptraj -i rmsd.in 
+cpptraj -i all_analysis.in
 
 cd ..
 
@@ -167,6 +176,7 @@ cpptraj -i all_analysis.in
 ambpdb -p 5m96_Mol10_solv.prmtop -c 10.prod_4.rst7 > 5m96_Mol10_final.pdb
 plip -f 5m96_Mol10_final.pdb
 cpptraj -i rmsd.in 
+cpptraj -i all_analysis.in
 
 cd ..
 
@@ -175,6 +185,7 @@ cpptraj -i all_analysis.in
 ambpdb -p 5m96_Mol11_solv.prmtop -c 10.prod_4.rst7 > 5m96_Mol11_final.pdb
 plip -f 5m96_Mol11_final.pdb
 cpptraj -i rmsd.in 
+cpptraj -i all_analysis.in
 
 cd ..
 
@@ -183,6 +194,7 @@ cpptraj -i all_analysis.in
 ambpdb -p 5m96_Mol12_solv.prmtop -c 10.prod_4.rst7 > 5m96_Mol12_final.pdb
 plip -f 5m96_Mol12_final.pdb
 cpptraj -i rmsd.in 
+cpptraj -i all_analysis.in
 
 cd ..
 
@@ -191,6 +203,7 @@ cpptraj -i all_analysis.in
 ambpdb -p 5m96_Mol13_solv.prmtop -c 10.prod_4.rst7 > 5m96_Mol13_final.pdb
 plip -f 5m96_Mol13_final.pdb
 cpptraj -i rmsd.in 
+cpptraj -i all_analysis.in
 
 cd ..
 
@@ -199,6 +212,7 @@ cpptraj -i all_analysis.in
 ambpdb -p 5m96_Mol14_solv.prmtop -c 10.prod_4.rst7 > 5m96_Mol14_final.pdb
 plip -f 5m96_Mol14_final.pdb
 cpptraj -i rmsd.in 
+cpptraj -i all_analysis.in
 
 cd ..
 
@@ -207,6 +221,7 @@ cpptraj -i all_analysis.in
 ambpdb -p 5m96_Mol15_solv.prmtop -c 10.prod_4.rst7 > 5m96_Mol15_final.pdb
 plip -f 5m96_Mol15_final.pdb
 cpptraj -i rmsd.in 
+cpptraj -i all_analysis.in
 
 cd ..
 
@@ -215,6 +230,7 @@ cpptraj -i all_analysis.in
 ambpdb -p 5m96_Mol16_solv.prmtop -c 10.prod_4.rst7 > 5m96_Mol16_final.pdb
 plip -f 5m96_Mol16_final.pdb
 cpptraj -i rmsd.in 
+cpptraj -i all_analysis.in
 
 cd ..
 
@@ -223,6 +239,7 @@ cpptraj -i all_analysis.in
 ambpdb -p 5m96_Mol17_solv.prmtop -c 10.prod_4.rst7 > 5m96_Mol17_final.pdb
 plip -f 5m96_Mol17_final.pdb
 cpptraj -i rmsd.in 
+cpptraj -i all_analysis.in
 
 cd ..
 
