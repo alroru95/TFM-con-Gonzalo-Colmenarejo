@@ -1,0 +1,36 @@
+# Archivo combinado para cpptraj
+
+# Parámetros y trayectoria
+parm 3l0l_Mol15_solv.prmtop
+trajin 10.prod_4.traj 
+
+# Calcular contactos nativos entre proteína y ligando
+nativecontacts name Protein_Ligand_Contacts :1-519&!@H= :MOL&!@H= \
+   writecontacts protein-ligand-contacts.dat \
+   resout resout.dat \
+   distance 3.5 \
+   byresidue out all-residues.dat mindist maxdist \
+   map mapout gnu \
+   contactpdb contactspdb.pdb \
+   series seriesout protein-ligand-contacts-series.dat
+
+# Calcular puentes de hidrógeno entre proteína y ligando
+hbond donormask :1-519 acceptormask :520 out nhb.dat avgout avghb.dat
+
+# Calcular interacciones de energía van der Waals y Coulomb entre proteína y ligando
+energy Protein_Ligand_Energy1 :1-519 out protein-energy.dat
+energy Protein_Ligand_Energy2 :MOL out ligand-energy.dat
+energy Protein_Ligand_Energy3 :1-520 out protein-ligand-energy.dat
+
+# Ejecutar todos los comandos
+run
+
+# Análisis de puentes de hidrógeno
+hbond contacts :1-520 avgout avg.dat series uuseries hbond.gnu nointramol
+go
+lifetime contacts[solutehb] out contacts-lifetime.dat
+go
+
+# Ejecutar todos los comandos de puentes de hidrógeno
+run
+
