@@ -1,0 +1,8 @@
+Input file for running GB
+&general
+   endframe=10000, verbose=1,
+#   entropy=1,
+/
+&gb
+  igb=2, saltcon=0.100
+/
