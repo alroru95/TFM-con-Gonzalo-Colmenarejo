@@ -16,7 +16,7 @@ def extract_energies(sdf_path):
                 print(f"Error al leer energía en línea {i + 1}")
     return energies
 
-#Asignación de decoys al ligando original: todos tienen 50 a excepción de HL8, que tiene 100
+#Asignación de decoys al ligando original: todos tienen 50 a excepción de Q6Y, que tiene 100
 def normalize_by_block(dec_energies, lig_energies, pocket_type):
     if pocket_type == "orthosteric":
         decoy_blocks = [50, 50, 50]
