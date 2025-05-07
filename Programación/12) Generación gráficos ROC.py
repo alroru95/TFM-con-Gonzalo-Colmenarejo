@@ -1,85 +1,91 @@
-# Importar módulos
+#Importación de módulos
 import numpy as np
 from matplotlib import pyplot as plt
-from sklearn.metrics import roc_auc_score, roc_curve
-import math
+from sklearn.metrics import roc_auc_score, roc_curve, precision_recall_curve, average_precision_score
 
-Name = input("Insert type of pocket: ")
-decoys_sdf = f"/home/alonso/TFM/dockings/decoys/{Name}_interaction_decoys.sdf"
-ligands_sdf = f"/home/alonso/TFM/dockings/ligands/{Name}_interaction_ligands.sdf"
-title = Name 
-
-# Extraer energías del archivo de decoys
-dec_energies = []
-with open(decoys_sdf, 'r') as f:
-    d_lines = f.readlines()
-    for i, line in enumerate(d_lines):
+#Definición de función para extraer los valores de energía
+def extract_energies(sdf_path):
+    with open(sdf_path, 'r') as f:
+        lines = f.readlines()
+    energies = []
+    for i, line in enumerate(lines):
         if '> <minimizedAffinity>' in line:
             try:
-                # Tomar la línea siguiente que contiene la energía
-                dec_energies.append(float(d_lines[i + 1].strip()))
+                energies.append(float(lines[i + 1].strip()))
             except (IndexError, ValueError):
-                print(f"Error al leer la energía en la línea {i + 1}")
+                print(f"Error al leer energía en línea {i + 1}")
+    return energies
 
-# Extraer energías del archivo de ligandos
-lig_energies = []
-with open(ligands_sdf, 'r') as f:
-    l_lines = f.readlines()
-    for i, line in enumerate(l_lines):
-        if '> <minimizedAffinity>' in line:
-            try:
-                # Tomar la línea siguiente que contiene la energía
-                lig_energies.append(float(l_lines[i + 1].strip()))
-            except (IndexError, ValueError):
-                print(f"Error al leer la energía en la línea {i + 1}")
+#Asignación de decoys al ligando original: todos tienen 50 a excepción de HL8, que tiene 100
+def normalize_by_block(dec_energies, lig_energies, pocket_type):
+    if pocket_type == "orthosteric":
+        decoy_blocks = [50, 50, 50]
+    elif pocket_type == "allosteric":
+        decoy_blocks = [100, 50, 50]
+    else:
+        raise ValueError("Tipo de bolsillo no reconocido. Usa 'orthosteric' o 'allosteric'.")
 
-# Mínima energía 
-min_energy = float(np.min(lig_energies))
+    assert sum(decoy_blocks) == len(dec_energies), "El número de decoys no coincide con los bloques esperados."
+#Inversión de signos de las energías
+    inv_lig_energies = [-e for e in lig_energies]
+    inv_dec_energies = [-e for e in dec_energies]
+#Normalización de la energía de cada decoy con respecto al asignado
+    norm_dec_energies = []
+    start = 0
+    for i, size in enumerate(decoy_blocks):
+        lig_min = min(inv_lig_energies[i::3])  # el ligando i
+        block = inv_dec_energies[start:start+size]
+        norm_block = [e / lig_min for e in block]
+        norm_dec_energies.extend(norm_block)
+        start += size
 
-# Normalización 
-inv_lig_energies = [float(i)*-1 for i in lig_energies]
-inv_dec_energies = [float(i)*-1 for i in dec_energies]
-Norm_dec_energy = [float(i)/min_energy for i in dec_energies]
+    return inv_lig_energies, norm_dec_energies
+#Generación de gráficos ROC y PR
+def plot_roc(inv_lig_energies, norm_dec_energies, title):
+    labels = [1] * len(inv_lig_energies) + [0] * len(norm_dec_energies)
+    energies = inv_lig_energies + norm_dec_energies
+#Calculo del valor de AUC y PR
+    fpr, tpr, _ = roc_curve(labels, energies)
+    auc = roc_auc_score(labels, energies)
+    # PR Curve
+    precision, recall, _ = precision_recall_curve(labels, energies)
+    average_precision = average_precision_score(labels, energies)
 
-# Crear etiquetas para metabolitos (1) y decoys (0)
+    # Plot both ROC and PR curves side by side
+    fig, axs = plt.subplots(1, 2, figsize=(12, 6))
 
-#sin normalizar
-labels = [1] * len(inv_lig_energies) + [0] * len(inv_dec_energies)
-energies = inv_lig_energies + inv_dec_energies
+    # ROC Curve
+    axs[0].plot(fpr, tpr, label=f"AUC = {auc:.3f}", color="darkorange")
+    axs[0].plot([0, 1], [0, 1], linestyle='--', color='gray')
+    axs[0].set_xlabel("False Positive Rate")
+    axs[0].set_ylabel("True Positive Rate")
+    axs[0].set_title(f"ROC Curve - {title}")
+    axs[0].legend()
 
-#normalizados
-norm_labels = [1] * len(inv_lig_energies) + [0] * len(Norm_dec_energy)
-norm_energies = inv_lig_energies + Norm_dec_energy
+    # PR Curve
+    axs[1].plot(recall, precision, label=f"AP = {average_precision:.3f}", color="darkblue")
+    axs[1].set_xlabel("Recall")
+    axs[1].set_ylabel("Precision")
+    axs[1].set_title(f"PR Curve - {title}")
+    axs[1].legend()
 
-# Generar ROC y representar
-# Sin normalizar
-fpr, tpr, thresholds = roc_curve(labels, energies)
-AUC = roc_auc_score(labels, energies)
+    # Supertitulo
+    plt.suptitle(f"ROC and PR Curves for {title} site", fontsize=16)
 
-# Normalizado
-norm_fpr, norm_tpr, thresholds = roc_curve(norm_labels, norm_energies)
-AUC_norm = roc_auc_score(norm_labels, norm_energies)
+    plt.tight_layout()
+    plt.savefig(f"{title}_ROC_PR_curve.png")
+    plt.show()
 
-# Crear gráficos de ROC
-figure, axis = plt.subplots(1, 2, figsize=(10, 8))
 
-# Gráfico no normalizado
-axis[0].plot(fpr, tpr, color='orange', label=f'AUC = {AUC:.3f}')
-axis[0].plot([0, 1], [0, 1], linestyle='--', color='black')
-axis[0].set_xlabel("False Positive Rate")
-axis[0].set_ylabel("True Positive Rate")
-axis[0].legend()
-axis[0].set_title("Not normalized")
-
-# Gráfico normalizado
-axis[1].plot(norm_fpr, norm_tpr, color='orange', label=f'AUC = {AUC_norm:.3f}')
-axis[1].plot([0, 1], [0, 1], linestyle='--', color='black')
-axis[1].set_xlabel("False Positive Rate")
-axis[1].set_ylabel("True Positive Rate")
-axis[1].legend()
-axis[1].set_title("Normalized")
-
-# Título de la figura
-figure.suptitle(title, fontsize=20)
-figure.savefig(f"{title}_ROC_plots.png")
-
+# ==== USO ====
+#Tipos de bolsillo de unión a analizar
+pocket_type = input("Tipo de bolsillo (orthosteric o allosteric): ")
+#Rutas a los archivos a analizar
+ligand_file = f"/home/alonso/TFM/dockings/ligands/{Name}_interaction_ligands.sdf"
+decoy_file = f"/home/alonso/TFM/dockings/decoys/{Name}_interaction_decoys.sdf"
+#Extraccion de energias para los archivos definidos arriba
+lig_energies = extract_energies(ligand_file)
+dec_energies = extract_energies(decoy_file)
+#Normalización de las energias
+inv_ligs, norm_decs = normalize_by_block(dec_energies, lig_energies, pocket_type)
+plot_roc(inv_ligs, norm_decs, pocket_type)
