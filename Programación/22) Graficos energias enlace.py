@@ -10,6 +10,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 import statistics
+import scipy.stats as st
 
 # Solicitar el nombre del archivo
 name = input("Introduce el nombre de la proteína archivo: ")
@@ -46,11 +47,23 @@ for num in numbers:
                 electrostatic_energies.append(elec)
                 total = float(parts[8])
                 total_energies.append(total)
-                
-    #Demostración de valores redondeado a dos decimales
-    print(round(statistics.mean(vdw_energies), 2))
-    print(round(statistics.mean(electrostatic_energies), 2))
-    print(round(statistics.mean(total_energies), 2))
+
+    #Cálculo de medias e intervalos de confianza
+    mean_vdw = statistics.mean(vdw_energies)
+    mean_electro = statistics.mean(electrostatic_energies)
+    mean_total = statistics.mean(total_energies)
+    
+    ic_vdw = st.t.interval(0.95, df = len(vdw_energies) - 1, 
+                           loc = mean_vdw, scale = st.sem(vdw_energies))
+    ic_electro = st.t.interval(0.95, df = len(vdw_energies) - 1, 
+                           loc = mean_electro, scale = st.sem(vdw_energies))
+    ic_total = st.t.interval(0.95, df = len(vdw_energies) - 1, 
+                           loc = mean_total, scale = st.sem(vdw_energies))
+    #Revision de medias e intervalos de confianza
+    print(f"{mean_vdw} {ic_vdw}")
+    print(f"{mean_electro} {ic_electro}")
+    print(f"{mean_total} {ic_total}")
+
 
     # Convertir listas a un DataFrame para manejar las tres series
     data = pd.DataFrame({
